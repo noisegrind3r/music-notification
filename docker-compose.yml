@@ -1,0 +1,27 @@
+services:
+  musicnotification.backend:
+    image: ${DOCKER_REGISTRY-}musicnotificationbackend
+    container_name: music-notification-backend
+    build:
+      context: .
+      dockerfile: MusicNotification.Backend/Dockerfile
+    env_file:
+      - .env
+    ports:
+      - ${BACKEND_HTTP_PORT}:8080
+      - ${BACKEND_HTTPS_PORT}:8081
+
+  mn-db:
+    image: postgres:17.0
+    shm_size: 1G
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${POSTGRES_CATALOGS_DB}
+      POSTGRES_USER: ${POSTGRES_CATALOGS_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_CATALOGS_PASSWORD}
+    ports:
+      - 5435:5432
+    volumes:
+      - ./docker-entrypoint-initdb.d_catalogs/:/docker-entrypoint-initdb.d/
+      - ./db_catalogs:/var/lib/postgresql/data

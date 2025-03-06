@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35728.132
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicNotification.Backend", "MusicNotification.Backend\MusicNotification.Backend.csproj", "{68BF1586-5683-4815-873D-101C4698FA41}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicNotification.Common", "MusicNotification.Common\MusicNotification.Common.csproj", "{5860694B-7993-4276-8A00-6FF5675DDC37}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicNotification.Catalogs", "MusicNotification.Catalogs\MusicNotification.Catalogs.csproj", "{EEA9DFA3-B08C-4313-83C3-5C3A89C0D9AD}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{0E793D51-47BE-4F22-AF60-1542F3547EF2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CBADAD5A-0696-4F8C-9C25-DFC3D53A5DF5}"
+	ProjectSection(SolutionItems) = preProject
+		.env = .env
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{68BF1586-5683-4815-873D-101C4698FA41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68BF1586-5683-4815-873D-101C4698FA41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68BF1586-5683-4815-873D-101C4698FA41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68BF1586-5683-4815-873D-101C4698FA41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5860694B-7993-4276-8A00-6FF5675DDC37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5860694B-7993-4276-8A00-6FF5675DDC37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5860694B-7993-4276-8A00-6FF5675DDC37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5860694B-7993-4276-8A00-6FF5675DDC37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEA9DFA3-B08C-4313-83C3-5C3A89C0D9AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEA9DFA3-B08C-4313-83C3-5C3A89C0D9AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEA9DFA3-B08C-4313-83C3-5C3A89C0D9AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEA9DFA3-B08C-4313-83C3-5C3A89C0D9AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E793D51-47BE-4F22-AF60-1542F3547EF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E793D51-47BE-4F22-AF60-1542F3547EF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E793D51-47BE-4F22-AF60-1542F3547EF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E793D51-47BE-4F22-AF60-1542F3547EF2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
