@@ -22,4 +22,18 @@ public class ArtistRepository(CatalogsDbContext dbContext) : BaseRepository<Cata
 
         return query;
     }
+
+    public async Task<ArtistEntity?> FoundArtistByNameAndCountry(string artistName, string country)
+    {
+        return await GetAll().Include(x => x.Country).FirstOrDefaultAsync(x => 
+            x.Name!= null && x.Name.Equals(artistName) && x.Country.Name != null && x.Country.Name.Equals(country)
+        );
+    }
+
+    public async Task<ArtistEntity?> FoundArtistByName(string artistName)
+    {
+        return await GetAll().Include(x => x.Country).FirstOrDefaultAsync(x =>
+            x.Name != null && x.Name.Equals(artistName)
+        );
+    }
 }

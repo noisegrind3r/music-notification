@@ -6,6 +6,7 @@ using MusicNotification.Catalogs.Albums.Application.EventHandlers;
 using MusicNotification.Catalogs.Albums.Application.Services;
 using MusicNotification.Catalogs.Albums.Repositories;
 using MusicNotification.Catalogs.Artists.Application.Dtos;
+using MusicNotification.Catalogs.Artists.Application.EventHandlers;
 using MusicNotification.Catalogs.Artists.Application.Services;
 using MusicNotification.Catalogs.Artists.Repositories;
 using MusicNotification.Catalogs.Countries.Application.Dtos;
@@ -14,7 +15,6 @@ using MusicNotification.Catalogs.Countries.Repositories;
 using MusicNotification.Catalogs.Genries.Application.Dtos;
 using MusicNotification.Catalogs.Genries.Application.Services;
 using MusicNotification.Catalogs.Genries.Repositories;
-using MusicNotification.Common.EventPublisher;
 using System.Reflection;
 
 namespace MusicNotification.Catalogs;
@@ -51,7 +51,9 @@ public static class CatalogsModule
         services.AddScoped<IAlbumService, AlbumService>();
 
         services.AddScoped<IMusicDataAddedEventHandler, MusicDataAddedEventHandler>();
+        services.AddScoped<IGetArtistByPropertiesRequestEventHandler, GetArtistByPropertiesRequestEventHandler>();
 
+        
         services.AddMediatR(cfg => { cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()); });
 
         return services;

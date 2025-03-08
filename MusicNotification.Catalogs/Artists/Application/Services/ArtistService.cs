@@ -83,7 +83,10 @@ public class ArtistService(
 
     public async Task<ArtistEntity?> GetArtistByDtoProperties(ArtistCommandDto dto)
     {
-        var query = GetArtistQuery();
+        var query = repository.Get(new ArtistQueryOptions
+        {
+            IncludeCountry = true,
+        });
 
         if (dto.CountryId is not null)
             return await repository.FirstOrDefaultAsync(query.Where(x => x.Name != null && x.Name.Equals(dto.Name) && x.Country.Id.Equals(dto.CountryId)));

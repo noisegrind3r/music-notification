@@ -26,6 +26,7 @@
     <ProjectReference Include="..\MusicNotification.Catalogs\MusicNotification.Catalogs.csproj" />
     <ProjectReference Include="..\MusicNotification.Feeder\MusicNotification.Feeder.csproj" />
     <ProjectReference Include="..\MusicNotification.Notification\MusicNotification.Notification.csproj" />
+    <ProjectReference Include="..\MusicNotification.Scheduler\MusicNotification.Scheduler.csproj" />
   </ItemGroup>
 
 </Project>

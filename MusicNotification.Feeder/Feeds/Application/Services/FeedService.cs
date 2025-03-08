@@ -1,18 +1,22 @@
 ﻿using MusicNotification.Common.Exceptions;
+using MusicNotification.Common.Interfaces;
 using MusicNotification.Common.Services;
+using MusicNotification.Events.Events;
 using MusicNotification.Feeder.FeedParser;
 using MusicNotification.Feeder.Feeds.Application.Dtos;
 using MusicNotification.Feeder.Feeds.Domain;
 using MusicNotification.Feeder.Feeds.Repositories;
 using System.Text;
 using System.Threading;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MusicNotification.Feeder.Feeds.Application.Services;
 
 public class FeedService(
     IFeedRepository repository, 
     IFeedDtoMapper mapper,
-    IFeedProcessor feedProcessor
+    IFeedProcessor feedProcessor,
+    IEventPublisher eventPublisher
     ): BaseService<FeedEntity, FeedQueryDto, FeedCommandDto>(repository, mapper), IFeedService
 {
     public async new Task<IEnumerable<FeedQueryDto?>?> GetAllAsync(CancellationToken cancellationToken = default)
@@ -72,12 +76,16 @@ public class FeedService(
         return await ProcessOneFeed(feedEntity, cancellationToken);
     }
 
-
-    public async Task<string> ProcessAllActiveFeeds(int id, CancellationToken cancellationToken = default)
+    public async Task<List<FeedEntity>> GetAllActiveFeeds()
     {
         var query = GetFeedQuery();
 
-        var feeds = await repository.ToListAsync(query.Where(x => x.IsActive ?? false));
+        return await repository.ToListAsync(query.Where(x => x.IsActive ?? false));
+    }
+
+    public async Task<string> ProcessAllActiveFeeds(CancellationToken cancellationToken = default)
+    {
+        var feeds = await GetAllActiveFeeds();
 
         var result = new StringBuilder();
         foreach (var feed in feeds)
@@ -114,17 +122,38 @@ public class FeedService(
     private async Task<string> ProcessOneFeed(FeedEntity feedEntity, CancellationToken cancellationToken = default)
     { 
         var data = await ProcessFeed(feedEntity);
-
-        feedEntity.Items = feedEntity.Items.Concat(data)?.ToList() ?? [];
-        await repository.UpdateAsync(feedEntity, cancellationToken);
-        await repository.UnitOfWork.SaveChangesAsync(cancellationToken);
+        await WriteFeedDataToFeedItems(feedEntity, data, cancellationToken);
 
         return $"Обработано данных {feedEntity.Name} = {data.Count()}";
     }
 
-    private async Task<IEnumerable<FeedItemEntity>> ProcessFeed(FeedEntity feedEntity)
+    private async Task<IEnumerable<FeedData>> ProcessFeed(FeedEntity feedEntity)
     {
         return await feedProcessor.Process(feedEntity);
+    }
+
+    public async Task WriteFeedDataToFeedItems(FeedEntity feedEntity, IEnumerable<FeedData> feedData, CancellationToken cancellationToken = default)
+    {
+        var newItems = feedData?.Select(x => new FeedItemEntity
+        {
+            Content = x.Content,
+            Feed = feedEntity,
+            Title = x.Title,
+            Uid = x.Uid,
+            Link = x.Link,
+        })?.ToList() ?? [];
+
+        if (newItems.Count != 0)
+        {
+            feedEntity.Items = feedEntity.Items.Concat(newItems)?.ToList() ?? [];
+            await repository.UpdateAsync(feedEntity, cancellationToken);
+            await repository.UnitOfWork.SaveChangesAsync(cancellationToken);
+        }
+    }
+
+    public async Task ReleaseNotification()
+    {
+        await eventPublisher.SendNotificationEvent<ReleaseNotifyEvent>(new ReleaseNotifyEvent());
     }
 
 

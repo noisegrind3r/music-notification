@@ -17,4 +17,9 @@ public class FeedRepository(FeederDbContext dbContext) : BaseRepository<FeederDb
 
         return query;
     }
+
+    public async Task<bool> FeedItemEntityExistByFeedIdAndUid(int feedId, string uid)
+    {
+        return await GetAll().Include(x => x.Items).AnyAsync(x => x.Id == feedId && x.Items.Any(y => y.Uid == uid));
+    }
 }

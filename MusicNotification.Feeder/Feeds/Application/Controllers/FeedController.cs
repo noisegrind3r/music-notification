@@ -26,9 +26,17 @@ public class FeedController(ILogger<FeedController> logger, IFeedService service
 
     [HttpPost("process")]
     [SwaggerOperation(Summary = "Обработать все активные фид")]
-    public async Task<IActionResult> ProcessAllActiveFeeds(int id)
+    public async Task<IActionResult> ProcessAllActiveFeeds()
     {
-        var result = await service.ProcessAllActiveFeeds(id);
+        var result = await service.ProcessAllActiveFeeds();
         return Ok(result);
+    }
+
+    [HttpPost("release")]
+    [SwaggerOperation(Summary = "Обработать все активные фид")]
+    public async Task<IActionResult> ReleaseNotification()
+    {
+        await service.ReleaseNotification();
+        return Ok();
     }
 }

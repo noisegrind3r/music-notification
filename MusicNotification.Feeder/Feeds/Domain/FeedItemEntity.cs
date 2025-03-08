@@ -17,6 +17,9 @@ public class FeedItemEntity : BaseAuditableEntity
     [Column("content")]
     public string? Content { get; set; }
 
+    [Column("link")]
+    public string? Link { get; set; }
+
     [Column("feed_id")]
     public int FeedId { get; set; } = default;
     public FeedEntity Feed { get; set; } = default!;

@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicNotification.Notificat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicNotification.Feeder", "MusicNotification.Feeder\MusicNotification.Feeder.csproj", "{057610D7-6B33-4A23-8FBF-C78D0EC54D42}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicNotification.Scheduler", "MusicNotification.Scheduler\MusicNotification.Scheduler.csproj", "{3933E676-9B41-49CE-9C0B-371519245902}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{057610D7-6B33-4A23-8FBF-C78D0EC54D42}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{057610D7-6B33-4A23-8FBF-C78D0EC54D42}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{057610D7-6B33-4A23-8FBF-C78D0EC54D42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3933E676-9B41-49CE-9C0B-371519245902}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3933E676-9B41-49CE-9C0B-371519245902}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3933E676-9B41-49CE-9C0B-371519245902}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3933E676-9B41-49CE-9C0B-371519245902}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

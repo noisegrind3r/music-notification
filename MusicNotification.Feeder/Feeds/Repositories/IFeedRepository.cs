@@ -10,5 +10,6 @@ public class FeedQueryOptions
 
 public interface IFeedRepository : IRepository<FeedEntity>
 {
+    Task<bool> FeedItemEntityExistByFeedIdAndUid(int feedId, string uid);
     IQueryable<FeedEntity> Get(FeedQueryOptions options);
 }

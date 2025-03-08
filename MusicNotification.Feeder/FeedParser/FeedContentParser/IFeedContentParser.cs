@@ -4,5 +4,5 @@ namespace MusicNotification.Feeder.FeedParser.FeedContentParser;
 
 public interface IFeedContentParser
 {
-    Task<IEnumerable<FeedData>?>? Parse(string url, CancellationToken cancellationToken = default);
+    Task<List<FeedData>> Parse(string url, CancellationToken cancellationToken = default);
 }

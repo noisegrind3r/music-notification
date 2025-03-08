@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using MusicNotification.Common.EventPublisher;
 using MusicNotification.Common.Exceptions;
+using MusicNotification.Common.Helpers;
 using MusicNotification.Common.Interfaces;
 using MusicNotification.DataLoader.DataLoader.Import.Excel;
 using MusicNotification.Events.Events;
@@ -38,7 +39,7 @@ namespace MusicNotification.DataLoader.DataLoader.Service
                 Data = data.Data?.Select(x => new MusicDataAddedEventData
                 {
                     Album = x.Album,
-                    ArtistName = x.ArtistName,
+                    ArtistName = StringHelper.RemoveBracketText(x.ArtistName).Trim(),
                     CountryName = x.Country,
                     GenreName = x.Genre,
                     Year = int.Parse(x.Year),

@@ -12,4 +12,6 @@ public class ArtistQueryOptions
 public interface IArtistRepository : IRepository<ArtistEntity>
 {
     IQueryable<ArtistEntity> Get(ArtistQueryOptions options);
+    Task<ArtistEntity?> FoundArtistByName(string artistName);
+    Task<ArtistEntity?> FoundArtistByNameAndCountry(string artistName, string country);
 }

@@ -6,6 +6,7 @@ using MusicNotification.Common.Interfaces;
 using MusicNotification.DataLoader.DataLoader;
 using MusicNotification.Notification;
 using MusicNotification.Feeder;
+using MusicNotification.Scheduler;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -34,9 +35,11 @@ services.AddCatalogsModule(opt => configuration.GetSection("Modules:Catalogs").B
 services.AddDataLoaderModule();
 services.AddNotificationModule(opt => configuration.GetSection("Modules:Notification").Bind(opt));
 services.AddFeederModule(opt => configuration.GetSection("Modules:Feeder").Bind(opt));
-
+services.AddSchedulerModule();
 
 services.AddScoped<IEventPublisher, EventPublisher>();
+
+services.AddJobsSchedulerModule();
 
 builder.Services.AddControllers();
 
