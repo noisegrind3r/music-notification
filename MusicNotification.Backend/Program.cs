@@ -1,7 +1,11 @@
 using MusicNotification.Catalogs;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Http.Json;
-using JsonOptions = Microsoft.AspNetCore.Http.Json.JsonOptions;
+using MusicNotification.Common.EventPublisher;
+using MusicNotification.Common.Interfaces;
+using MusicNotification.DataLoader.DataLoader;
+using MusicNotification.Notification;
+using MusicNotification.Feeder;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -27,6 +31,12 @@ services.AddSwaggerGen(options =>
 });
 
 services.AddCatalogsModule(opt => configuration.GetSection("Modules:Catalogs").Bind(opt));
+services.AddDataLoaderModule();
+services.AddNotificationModule(opt => configuration.GetSection("Modules:Notification").Bind(opt));
+services.AddFeederModule(opt => configuration.GetSection("Modules:Feeder").Bind(opt));
+
+
+services.AddScoped<IEventPublisher, EventPublisher>();
 
 builder.Services.AddControllers();
 
@@ -41,6 +51,7 @@ services.Configure<JsonOptions>(opt =>
 var app = builder.Build();
 
 app.MigrateCatalogsDb();
+app.MigrateFeederDb();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

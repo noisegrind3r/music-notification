@@ -19,7 +19,7 @@ public class AlbumDtoMapper(IGenreDtoMapper genreDtoMapper) : IAlbumDtoMapper
             Name = entity.Name,
             Bitrate = entity.Bitrate,
             Size = entity.Size,
-            Time = entity.Time,
+            Time = entity.Time.ToTimeSpan().ToString("hh':'mm':'ss'.'fff"),
             Year = entity.Year,
             Genre = genreDtoMapper.ToQueryDto(entity.Genre),
             UpdatedAt = entity.UpdatedAt,
@@ -39,7 +39,7 @@ public class AlbumDtoMapper(IGenreDtoMapper genreDtoMapper) : IAlbumDtoMapper
         entity.Bitrate = dto.Bitrate;
         entity.Size = dto.Size;
         entity.Year = dto.Year;
-        entity.Time = NodaTime.Duration.FromSeconds(dto.Time);
+        entity.Time = NodaTime.Duration.FromSeconds((long)dto.Time);
 
         return entity;
     }

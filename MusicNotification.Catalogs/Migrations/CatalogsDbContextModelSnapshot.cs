@@ -85,6 +85,8 @@ namespace MusicNotification.Catalogs.Migrations
 
                     b.HasIndex("GenreId");
 
+                    b.HasIndex("Name", "Year", "ArtistId");
+
                     b.ToTable("album");
                 });
 
@@ -127,6 +129,8 @@ namespace MusicNotification.Catalogs.Migrations
 
                     b.HasIndex("DeletedAt");
 
+                    b.HasIndex("Name", "CountryId");
+
                     b.ToTable("artist");
                 });
 
@@ -163,6 +167,8 @@ namespace MusicNotification.Catalogs.Migrations
 
                     b.HasIndex("DeletedAt");
 
+                    b.HasIndex("Name");
+
                     b.ToTable("country");
                 });
 
@@ -198,6 +204,8 @@ namespace MusicNotification.Catalogs.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DeletedAt");
+
+                    b.HasIndex("Name");
 
                     b.ToTable("genre");
                 });

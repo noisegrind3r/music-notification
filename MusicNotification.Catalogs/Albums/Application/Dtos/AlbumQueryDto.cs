@@ -22,7 +22,7 @@ public class AlbumQueryDto : BaseQueryDto<AlbumEntity>
     public string Bitrate { get; set; } = string.Empty;
 
     [SwaggerSchema("Продолжительность")]
-    public Duration Time { get; set; }
+    public string Time { get; set; } = string.Empty;
 
     [SwaggerSchema("Описание стиля")]
     public string? Description { get; set; }

@@ -8,7 +8,7 @@ internal class GenreConfiguration : BaseAudiatableEntityConfiguration<GenreEntit
 {
     public override void Configure(EntityTypeBuilder<GenreEntity> builder)
     {
-
+        builder.HasIndex(x => new { x.Name });
 
         base.Configure(builder);
     }

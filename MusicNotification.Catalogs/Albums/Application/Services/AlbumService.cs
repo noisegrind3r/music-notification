@@ -81,8 +81,24 @@ public class AlbumService(
         return await repository.FirstOrDefaultAsync(query.Where(x => x.Id == id)) ??
         throw new EntityNotFoundException($"Не найдена сущность с id {id}");
     }
+    public async Task<bool> CheckDuplicate(AlbumEntity entity)
+    {
+        var query = GetAlbumQuery();
+        var existed = await repository.FirstOrDefaultAsync(query.Where(x =>
+            x.Artist.Name == entity.Artist.Name &&
+            x.Artist.Country.Name == entity.Artist.Country.Name &&
+            x.Name == entity.Name &&
+            x.Year == entity.Year
+        ));
+        if (existed is not null)
+        {
+            entity = existed;
+            return true;
+        }
+        return false;
+    }
 
-    private async Task<AlbumEntity> CreateOrUpdateAlbumEntity(AlbumCommandDto dto, AlbumEntity entity)
+    public async Task<AlbumEntity> CreateOrUpdateAlbumEntity(AlbumCommandDto dto, AlbumEntity entity)
     {
         entity = mapper.FromCommandDto(entity, dto) ?? new AlbumEntity();
         if (dto.GenreId is not null)
@@ -122,7 +138,9 @@ public class AlbumService(
                 entity.Artist = artist;
             else
             {
-                artist = await artistService.CreateOrUpdateArtistEntity(dto.Artist, new ArtistEntity());
+                var artistDto = await artistService.AddAsync(dto.Artist);
+                if (artistDto is not null)
+                    artist = await artistService.GetArtistEntityByIdAsync(artistDto.Id);
                 if (artist is not null)
                     entity.Artist = artist;
             }

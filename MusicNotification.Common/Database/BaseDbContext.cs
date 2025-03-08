@@ -7,15 +7,10 @@ using System.Reflection;
 
 namespace MusicNotification.Common.Database
 {
-    public abstract class BaseDbContextUnitOfWork<TDbContext> : DbContext, IUnitOfWork
+    public abstract class BaseDbContextUnitOfWork<TDbContext>(DbContextOptions<TDbContext> options) : DbContext(options), IUnitOfWork
         where TDbContext : DbContext
     {
         private IDbContextTransaction? _dbContextTransaction;
-
-        public BaseDbContextUnitOfWork(DbContextOptions<TDbContext> options)
-            : base(options)
-        {
-        }
 
         public async Task<IDisposable> BeginTransactionAsync(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted, CancellationToken cancellationToken = default)
         {
@@ -42,16 +37,16 @@ namespace MusicNotification.Common.Database
             return base.SaveChanges();
         }
 
-        public Task<int> SaveChangesAsync(string userName, CancellationToken cancellationToken = default)
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            AddTimestamps(userName);
+            AddTimestamps();
             UpdateSoftDeleteStatuses();
             var saveChangesResult = base.SaveChangesAsync(cancellationToken);
             return saveChangesResult;
         }
         
 
-        private void AddTimestamps(string? userName = default)
+        private void AddTimestamps()
         {
             var entities = ChangeTracker?.Entries().Where(x => x.State is EntityState.Added or EntityState.Modified or EntityState.Deleted);
 

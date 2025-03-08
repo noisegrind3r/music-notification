@@ -8,7 +8,7 @@ internal class CountryConfiguration : BaseAudiatableEntityConfiguration<CountryE
 {
     public override void Configure(EntityTypeBuilder<CountryEntity> builder)
     {
-
+        builder.HasIndex(x => new { x.Name });
 
         base.Configure(builder);
     }

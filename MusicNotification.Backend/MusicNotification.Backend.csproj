@@ -22,7 +22,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MusicNotification.DataLoader\MusicNotification.DataLoader.csproj" />
     <ProjectReference Include="..\MusicNotification.Catalogs\MusicNotification.Catalogs.csproj" />
+    <ProjectReference Include="..\MusicNotification.Feeder\MusicNotification.Feeder.csproj" />
+    <ProjectReference Include="..\MusicNotification.Notification\MusicNotification.Notification.csproj" />
   </ItemGroup>
 
 </Project>

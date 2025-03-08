@@ -22,7 +22,7 @@ public class AlbumCommandDto : BaseCommandDto<AlbumEntity>
     public string Bitrate { get; set; } = string.Empty;
 
     [SwaggerSchema("Продолжительность")]
-    public long Time { get; set; }
+    public double Time { get; set; }
 
     [SwaggerSchema("Описание стиля")]
     public string? Description { get; set; }

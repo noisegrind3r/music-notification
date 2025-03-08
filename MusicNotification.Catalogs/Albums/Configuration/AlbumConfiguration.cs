@@ -20,6 +20,7 @@ internal class AlbumConfiguration : BaseAudiatableEntityConfiguration<AlbumEntit
             .HasForeignKey(x => x.ArtistId)
             .OnDelete(DeleteBehavior.SetNull);
 
+        builder.HasIndex(x => new { x.Name, x.Year, x.ArtistId });
 
         base.Configure(builder);
     }

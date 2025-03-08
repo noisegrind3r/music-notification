@@ -14,6 +14,8 @@ internal class ArtistConfiguration : BaseAudiatableEntityConfiguration<ArtistEnt
             .HasForeignKey(x => x.CountryId)
             .OnDelete(DeleteBehavior.SetNull);
 
+        builder.HasIndex(x => new { x.Name, x.CountryId });
+
         base.Configure(builder);
     }
 }
