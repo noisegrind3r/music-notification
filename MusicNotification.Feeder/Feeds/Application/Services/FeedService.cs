@@ -141,6 +141,7 @@ public class FeedService(
             Title = x.Title,
             Uid = x.Uid,
             Link = x.Link,
+            Artist = x.FeedDataParsedTitle?.ArtistName,
         })?.ToList() ?? [];
 
         if (newItems.Count != 0)

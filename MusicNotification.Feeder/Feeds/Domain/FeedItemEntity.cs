@@ -20,6 +20,9 @@ public class FeedItemEntity : BaseAuditableEntity
     [Column("link")]
     public string? Link { get; set; }
 
+    [Column("artist")]
+    public string? Artist { get; set; }
+
     [Column("feed_id")]
     public int FeedId { get; set; } = default;
     public FeedEntity Feed { get; set; } = default!;

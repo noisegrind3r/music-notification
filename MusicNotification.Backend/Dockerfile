@@ -13,8 +13,13 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["MusicNotification.Backend/MusicNotification.Backend.csproj", "MusicNotification.Backend/"]
-COPY ["MusicNotification.Catalogs/MusicNotification.Catalogs.csproj", "MusicNotification.Catalogs/"]
+COPY ["MusicNotification.DataLoader/MusicNotification.DataLoader.csproj", "MusicNotification.DataLoader/"]
 COPY ["MusicNotification.Common/MusicNotification.Common.csproj", "MusicNotification.Common/"]
+COPY ["MusicNotification.Events/MusicNotification.Events.csproj", "MusicNotification.Events/"]
+COPY ["MusicNotification.Catalogs/MusicNotification.Catalogs.csproj", "MusicNotification.Catalogs/"]
+COPY ["MusicNotification.Feeder/MusicNotification.Feeder.csproj", "MusicNotification.Feeder/"]
+COPY ["MusicNotification.Notification/MusicNotification.Notification.csproj", "MusicNotification.Notification/"]
+COPY ["MusicNotification.Scheduler/MusicNotification.Scheduler.csproj", "MusicNotification.Scheduler/"]
 RUN dotnet restore "./MusicNotification.Backend/MusicNotification.Backend.csproj"
 COPY . .
 WORKDIR "/src/MusicNotification.Backend"
