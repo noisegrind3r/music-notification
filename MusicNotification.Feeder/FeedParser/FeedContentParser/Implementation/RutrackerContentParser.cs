@@ -35,7 +35,7 @@ public class RutrackerContentParser: IFeedContentParser
     {
         var pattern = "\\(([^)]+)\\)\\s*\\[([^]]+)\\]\\s*([^\\-]+(?:-[^\\-]+)*)\\s* - \\s*([^\\-]+)\\s* - \\s*([^,]+),\\s*(.*)";
         var match = Regex.Match(title, pattern);
-        if (match != null)
+        if (match != null && !string.IsNullOrEmpty(match.Groups[3].Value))
         {
             return new FeedDataParsedTitle
             {
@@ -44,6 +44,20 @@ public class RutrackerContentParser: IFeedContentParser
                 Genre = match.Groups[1].Value,
                 Year = match.Groups[5].Value,
             };
+        }
+        else
+        {
+            pattern = "\\(([^)]+)\\)\\s*(?:\\[([^]]+)\\])?\\s*([^\\-]+)\\s* - \\s*([^\\-]+)\\s*";
+            match = Regex.Match(title, pattern);
+            if (match != null)
+            {
+                return new FeedDataParsedTitle
+                {
+                    ArtistName = match.Groups[3].Value,
+                    Genre = match.Groups[1].Value,
+                };
+            }
+
         }
         return default;
     }

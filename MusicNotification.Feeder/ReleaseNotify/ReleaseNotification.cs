@@ -13,7 +13,7 @@ public class ReleaseNotification(
     IFeedService feedService,
     IFeedProcessor feedProcessor): IReleaseNotification
 {
-    private string[] _favoriteTagsArray = favoriteTags.Split(';');
+    private string[] _favoriteTagsArray = favoriteTags.ToLower().Split(';');
 
     public async Task ProcessAndNotificateAllFeeds()
     {
@@ -32,16 +32,18 @@ public class ReleaseNotification(
                     if (feedItem.FeedDataParsedTitle is null)
                         continue;
 
-                    var existedArtist = await eventPublisher.SendRequestEvent<GetArtistByPropertiesRequestEvent, GetArtistByPropertiesResponse>(new GetArtistByPropertiesRequestEvent
-                    {
-                        ArtistName = feedItem.FeedDataParsedTitle.ArtistName ?? string.Empty,
-                        Country = feedItem.FeedDataParsedTitle.Country ?? string.Empty,
-                    });
+                    var existedArtist = new GetArtistByPropertiesResponse();
+                    if (!string.IsNullOrEmpty(feedItem.FeedDataParsedTitle.ArtistName))
+                        existedArtist = await eventPublisher.SendRequestEvent<GetArtistByPropertiesRequestEvent, GetArtistByPropertiesResponse>(new GetArtistByPropertiesRequestEvent
+                        {
+                            ArtistName = feedItem.FeedDataParsedTitle.ArtistName ?? string.Empty,
+                            Country = feedItem.FeedDataParsedTitle.Country ?? string.Empty,
+                        });
 
                     var favoriteGenre = false;
                     if (!existedArtist.IsFound && !string.IsNullOrEmpty(feedItem.FeedDataParsedTitle.Genre))
                     {
-                        if (_favoriteTagsArray.Any(x => feedItem.FeedDataParsedTitle.Genre.Contains(x)))
+                        if (_favoriteTagsArray.Any(x => feedItem.FeedDataParsedTitle.Genre.Contains(x, StringComparison.CurrentCultureIgnoreCase)))
                         {
                             existedArtist.IsFound = true;
                             favoriteGenre = true;

@@ -9,7 +9,6 @@ services:
       - .env
     ports:
       - ${BACKEND_HTTP_PORT}:8080
-      - ${BACKEND_HTTPS_PORT}:8081
 
   mn-db:
     image: postgres:17.0
