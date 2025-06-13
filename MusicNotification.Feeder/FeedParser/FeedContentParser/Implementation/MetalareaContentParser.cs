@@ -1,5 +1,7 @@
 ﻿
+using System.Net;
 using System.ServiceModel.Syndication;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 
@@ -7,33 +9,51 @@ namespace MusicNotification.Feeder.FeedParser.FeedContentParser.Implementation;
 
 public class MetalareaContentParser : IFeedContentParser
 {
-    public Task<List<FeedData>> Parse(string url, CancellationToken cancellationToken = default)
+    public async Task<List<FeedData>> Parse(string url, CancellationToken cancellationToken = default)
     {
-        XmlReader reader = XmlReader.Create(url);
-
-        SyndicationFeed feed = SyndicationFeed.Load(reader);
-
-        reader.Close();
-
-        var result = new List<FeedData>();
-        foreach (SyndicationItem item in feed.Items)
+        var handler = new HttpClientHandler
         {
-            var feedData = new FeedData
+            AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate,
+            AllowAutoRedirect = true,
+            MaxAutomaticRedirections = 5,
+        };
+
+        using (var httpClient = new HttpClient(handler))
+        {
+            httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36");
+            httpClient.Timeout = TimeSpan.FromSeconds(30);
+
+            var responseBytes = await httpClient.GetByteArrayAsync(url);
+
+            var responseData = Encoding.UTF8.GetString(responseBytes);
+
+            using (var stringReader = new StringReader(responseData))
+            using (var reader = XmlReader.Create(stringReader))
             {
-                FeedDataParsedTitle = ParseTitle(item.Title.Text),
-                Content = item.Summary.Text,
-                Uid = item.Id,
-                Title = item.Title.Text,
-                Link = item.Links.Count != 0 ? item.Links[0].Uri.AbsoluteUri : string.Empty,
-            };
-            var country = ParseContent(item.Summary.Text);
+                var feed = SyndicationFeed.Load(reader);
+                reader.Close();
 
-            if (feedData.FeedDataParsedTitle != null)
-                feedData.FeedDataParsedTitle.Country = country;
-            result.Add(feedData);
+                var result = new List<FeedData>();
+                foreach (SyndicationItem item in feed.Items)
+                {
+                    var feedData = new FeedData
+                    {
+                        FeedDataParsedTitle = ParseTitle(item.Title.Text),
+                        Content = item.Summary.Text,
+                        Uid = item.Id,
+                        Title = item.Title.Text,
+                        Link = item.Links.Count != 0 ? item.Links[0].Uri.AbsoluteUri : string.Empty,
+                    };
+                    var country = ParseContent(item.Summary.Text);
+
+                    if (feedData.FeedDataParsedTitle != null)
+                        feedData.FeedDataParsedTitle.Country = country;
+                    result.Add(feedData);
+                }
+
+                return result;
+            }
         }
-
-        return Task.FromResult(result);
     }
 
     private static FeedDataParsedTitle? ParseTitle(string title)
@@ -59,7 +79,7 @@ public class MetalareaContentParser : IFeedContentParser
         var match = Regex.Match(content, pattern);
         if (match != null)
         {
-            return match.Groups[1].Value;
+            return match.Groups[1].Value?.Trim();
         }
         return default;
     }
